@@ -8,3 +8,15 @@ module.exports.store = async (req, res) => {
     data,
   });
 };
+
+module.exports.findById = async (req, res, next) => {
+  try {
+    const data = await service.findById(req.params.id);
+    res.status(200).json({
+      message: 'success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};

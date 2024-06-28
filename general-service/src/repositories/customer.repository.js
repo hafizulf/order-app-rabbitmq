@@ -1,5 +1,5 @@
 const { Customer } = require('../models');
-const BadRequestError = require('../exceptions/BadRequestError');
+const NotFoundError = require('../exceptions/NotFoundError');
 
 module.exports.findByField = async ({
   field,
@@ -17,4 +17,14 @@ module.exports.findByField = async ({
 module.exports.store = async (props) => {
   const createdCustomer = await Customer.create(props);
   return createdCustomer;
+};
+
+module.exports.findById = async (id) => {
+  const data = await Customer.findByPk(id);
+
+  if (!data) {
+    throw new NotFoundError('Customer not found');
+  }
+
+  return data;
 };

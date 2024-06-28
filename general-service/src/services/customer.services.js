@@ -2,7 +2,6 @@ const BadRequestError = require('../exceptions/BadRequestError');
 const repository = require('../repositories/customer.repository');
 
 module.exports.store = async (data) => {
-  console.log(data);
   const user = await repository.findByField({
     field: 'username',
     value: data.username
@@ -14,3 +13,8 @@ module.exports.store = async (data) => {
 
   return await repository.store(data);
 };
+
+module.exports.findById = async (id) => {
+  const data = await repository.findById(id);
+  return data;
+}

@@ -17,3 +17,12 @@ module.exports.createMenuValidator = [
     .isNumeric()
     .withMessage('Price must be a number'),
 ];
+
+module.exports.getMenuValidator = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isNumeric()
+    .withMessage('Id must be a string'),
+];
+

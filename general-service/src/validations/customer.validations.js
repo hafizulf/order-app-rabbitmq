@@ -7,3 +7,11 @@ module.exports.createCustomerValidator = [
     .isString()
     .withMessage('Username must be a string'),
 ];
+
+module.exports.getCustomerValidator = [
+  param('id')
+    .notEmpty()
+    .withMessage('Id is required')
+    .isNumeric()
+    .withMessage('Id must be a string'),
+];
