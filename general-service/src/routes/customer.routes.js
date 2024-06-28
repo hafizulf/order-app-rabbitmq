@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-const { createMenuValidator } = require('../validations/menu.validations');
+const { createCustomerValidator } = require('../validations/customer.validations');
 const { validate } = require('../middlewares/validate');
-const controller = require('../controllers/menu.controllers');
+const controller = require('../controllers/customer.controllers');
 
 router
   .post(
     '/',
-    createMenuValidator,
+    createCustomerValidator,
     validate,
     controller.store,
   )
