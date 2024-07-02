@@ -2,6 +2,7 @@ const repository = require('../repositories/payment.repository');
 const axios = require('axios');
 const NotFoundError = require('../exceptions/NotFoundError');
 const BadRequestError = require('../../../general-service/src/exceptions/BadRequestError');
+const moment = require('moment-timezone');
 
 module.exports.storeOrderPayment = async function(order) {
   try {
@@ -104,7 +105,7 @@ module.exports.findById = async function (id) {
       menu: menu.name,
       priceTotal: `Rp. ${Number(dataPayment.priceTotal).toLocaleString('id-ID')},-`,
       paid: dataPayment.paid,
-      paidDatetime: dataPayment.paidDatetime,
+      paidDatetime: moment(dataPayment.paidDatetime).tz('Asia/Jakarta').format('YYYY-MM-DD HH:mm:ss')
     };
   } catch (error) {
     throw(error);
