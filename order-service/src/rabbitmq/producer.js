@@ -7,7 +7,7 @@ module.exports.publishOrder = async function(order) {
 
     // Publish the order message to the exchange
     channel.publish(
-      exchange,
+      'order_exchange',
       'order.created',
       Buffer.from(JSON.stringify(order)),
       {
