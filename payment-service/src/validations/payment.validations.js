@@ -7,3 +7,11 @@ module.exports.updatePaymentValidator = [
     .isNumeric()
     .withMessage('Payment id must be a number'),
 ];
+
+module.exports.getPaymentValidator = [
+  param('id')
+    .notEmpty()
+    .withMessage('Payment id is required')
+    .isNumeric()
+    .withMessage('Payment id must be a number'),
+];

@@ -50,3 +50,63 @@ module.exports.updateStatusPayment = async function (id) {
     throw(error);
   }
 };
+
+module.exports.findById = async function (id) {
+  try {
+    const dataPayment = await repository.findById(id);
+
+    let order;
+    try {
+      const response = await axios.get(
+        `${process.env.ORDER_SERVICE_URL}orders/${dataPayment.orderId}`
+      );
+      order = response.data.data;
+    } catch (e) {
+      console.log(
+        `failed get data from ${process.env.ORDER_SERVICE_URL}/orders/${dataPayment.orderId}: ` +
+          e.message
+      );
+      throw new NotFoundError('Failed to get data menu!');
+    }
+
+    let customer;
+    let menu;
+    try {
+      const response = await axios.get(
+        `${process.env.GENERAL_SERVICE_URL}customers/${order.customerId}`
+      );
+      customer = response.data.data;
+    } catch (e) {
+      console.log(
+        `failed get data from ${process.env.GENERAL_SERVICE_URL}/customers/${order.customerId}: ` +
+          e.message
+      );
+      throw new NotFoundError('Failed to get data customer!');
+    }
+
+    try {
+      const response = await axios.get(
+        `${process.env.GENERAL_SERVICE_URL}menus/${order.menuId}`
+      );
+      menu = response.data.data;
+    } catch (e) {
+      console.log(
+        `failed get data from ${process.env.GENERAL_SERVICE_URL}/menus/${order.menuId}: ` +
+          e.message
+      );
+      throw new NotFoundError('Failed to get data menu!');
+    }
+
+    return {
+      paymentId: dataPayment.id,
+      orderId: dataPayment.orderId,
+      customer: customer.username,
+      menu: menu.name,
+      priceTotal: `Rp. ${Number(dataPayment.priceTotal).toLocaleString('id-ID')},-`,
+      paid: dataPayment.paid,
+      paidDatetime: dataPayment.paidDatetime,
+    };
+  } catch (error) {
+    throw(error);
+  }
+}
