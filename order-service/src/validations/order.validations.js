@@ -12,3 +12,11 @@ module.exports.createOrderValidator = [
     .isNumeric()
     .withMessage('Menu id must be a number'),
 ];
+
+module.exports.getOrderValidator = [
+  param('id')
+    .notEmpty()
+    .withMessage('Order id is required')
+    .isNumeric()
+    .withMessage('Order id must be a number'),
+];

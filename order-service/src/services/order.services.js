@@ -42,3 +42,8 @@ module.exports.store = async (data) => {
 
   return createdOrder
 };
+
+module.exports.findById = async (id) => {
+  const data = await repository.findById(id);
+  return data;
+};
