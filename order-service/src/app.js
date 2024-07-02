@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const { connect } = require('amqplib');
 
 const errorHandler = require('./middlewares/errorHandler');
 
@@ -41,5 +42,21 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// Initialize the order exchange
+(async () => {
+  try {
+    const connection = await connect(process.env.AMQP_URI);
+    const channel = await connection.createChannel();
+
+    console.log("[Order Service] - Order exchange created");
+    await channel.assertExchange('order_exchange', 'topic', { durable: true });
+
+    await channel.close();
+    await connection.close();
+  } catch (error) {
+    console.error(error);
+  }
+})();
 
 module.exports = app;

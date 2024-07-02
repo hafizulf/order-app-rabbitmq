@@ -5,10 +5,6 @@ module.exports.publishOrder = async function(order) {
     const connection = await connect(process.env.AMQP_URI);
     const channel = await connection.createChannel();
 
-    // Create or ensure the exchange exists
-    const exchange = 'order_exchange';
-    await channel.assertExchange(exchange, 'topic', { durable: true });
-
     // Publish the order message to the exchange
     channel.publish(
       exchange,
